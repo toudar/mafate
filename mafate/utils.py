@@ -115,25 +115,13 @@ def dict_expes_stab_article(project_name):
     eCTL = Expe(project=project_name, model='CNRM-CM6-1', name='piControl', member=1, ybeg=1850, yend=2349, marker=',', color='silver')
     eCTL.expe_control = eCTL  
     dict_allexpes[eCTL.expid()] = eCTL
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-4xCO2', member=1, ybeg=1850, yend=2762, expe_control=eCTL, marker=',', color='dimgray')
-    dict_allexpes[e.expid()] = e
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-2xCO2', member=1, ybeg=1850, yend=2189, expe_control=eCTL, marker=',', color='black')
-    dict_allexpes[e.expid()] = e
-    # e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-1p4xCO2-dab', member=1, ybeg=1969, yend=2263, expe_control=eCTL, marker='.', color='purple')
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-1p4xCO2-dab', member=1, ybeg=1969, yend=2203, expe_control=eCTL, marker='.', color='purple')
-    dict_allexpes[e.expid()] = e
-    # e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2356, expe_control=eCTL, marker='.', color='orangered')
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2277, expe_control=eCTL, marker='.', color='orangered')
-    dict_allexpes[e.expid()] = e
-    # e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2636, expe_control=eCTL, marker='.', color='orange')
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2576, expe_control=eCTL, marker='.', color='orange')
-    dict_allexpes[e.expid()] = e
-    # e = Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2096, expe_control=eCTL, marker='.', color='dodgerblue')
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2017, expe_control=eCTL, marker='.', color='dodgerblue')
-    dict_allexpes[e.expid()] = e
-    # e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2093, expe_control=eCTL, marker='.', color='green')
-    e = Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2033, expe_control=eCTL, marker='.', color='green')
-    dict_allexpes[e.expid()] = e
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-4xCO2', member=1, ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-2xCO2', member=1, ybeg=1850, yend=2308, expe_control=eCTL, marker=',', color='black'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-1p4xCO2-dab', member=1, ybeg=1969, yend=2268, expe_control=eCTL, marker='.', color='purple'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2376, expe_control=eCTL, marker='.', color='orangered'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2649, expe_control=eCTL, marker='.', color='orange'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2116, expe_control=eCTL, marker='.', color='dodgerblue'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2106, expe_control=eCTL, marker='.', color='green'))
     return dict_allexpes
 
 
