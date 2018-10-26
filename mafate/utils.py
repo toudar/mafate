@@ -121,6 +121,7 @@ def dict_expes_stab_article(project_name):
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2376, expe_control=eCTL, marker='.', color='orangered'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2649, expe_control=eCTL, marker='.', color='orange'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2116, expe_control=eCTL, marker='.', color='dodgerblue'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-4xCO2', member=1, ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2106, expe_control=eCTL, marker='.', color='green'))
     return dict_allexpes
 
