@@ -23,7 +23,7 @@ def define_CLIMAF_project(name, rootdirs, file_pattern):
       - attributes
       - data localization
     '''
-    cproject(name, 'model', 'experiment', 'member', 'variable', 'table')
+    cproject(name, 'model', 'experiment', 'member', 'realization', 'variable', 'table')
     dataloc(project = name, organization = 'generic', url = [rdir+'/'+file_pattern for rdir in rootdirs])
 
 
@@ -96,6 +96,97 @@ def dict_expes_CMIP5_piControl(project_name):
     return dict_allexpes
 
 
+def dict_expes_CMIP5_historical(project_name):
+    '''
+    Define the specific dict of Expe-s for CMIP-5 historical-related studies
+    '''
+    dict_allexpes = {}
+    expe_name = 'historical'
+    eCTL = Expe(project=project_name, model='bcc-csm1-1', name=expe_name, member=1, ybeg=1, yend=500)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='bcc-csm1-1', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='bcc-csm1-1', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='bcc-csm1-1', name=expe_name, member=3, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='BNU-ESM', name=expe_name, member=1, ybeg=1450, yend=2008)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='BNU-ESM', name=expe_name, member=1, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='CanESM2', name=expe_name, member=1, ybeg=2015, yend=3010)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CanESM2', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CanESM2', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CanESM2', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CanESM2', name=expe_name, member=4, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CanESM2', name=expe_name, member=5, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='CCSM4', name=expe_name, member=1, ybeg=250, yend=1300)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=4, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=5, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CCSM4', name=expe_name, member=6, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=1, ybeg=1, yend=500)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=4, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=5, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=6, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=7, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=8, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=9, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CSIRO-Mk3-6-0', name=expe_name, member=10, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='FGOALS-s2', name=expe_name, member=1, ybeg=1850, yend=2350)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='FGOALS-s2', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='FGOALS-s2', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='FGOALS-s2', name=expe_name, member=3, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='GFDL-ESM2M', name=expe_name, member=1, ybeg=1, yend=500)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='GFDL-ESM2M', name=expe_name, member=1, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='HadGEM2-ES', name=expe_name, member=1, ybeg=1860, yend=2434)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='HadGEM2-ES', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='HadGEM2-ES', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='HadGEM2-ES', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='HadGEM2-ES', name=expe_name, member=4, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='inmcm4', name=expe_name, member=1, ybeg=1860, yend=2349)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='inmcm4', name=expe_name, member=1, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=1, ybeg=1800, yend=2799)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=4, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=5, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='IPSL-CM5A-LR', name=expe_name, member=6, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='MIROC5', name=expe_name, member=1, ybeg=2000, yend=2699)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=3, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=4, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='MPI-ESM-LR', name=expe_name, member=1, ybeg=1850, yend=2849)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MPI-ESM-LR', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MIROC5', name=expe_name, member=3, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='MRI-CGCM3', name=expe_name, member=1, ybeg=1851, yend=2350)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MRI-CGCM3', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MRI-CGCM3', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='MRI-CGCM3', name=expe_name, member=3, ybeg=1850, yend=2005))
+    
+    eCTL = Expe(project=project_name, model='NorESM1-M', name=expe_name, member=1, ybeg=700, yend=1200)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='NorESM1-M', name=expe_name, member=1, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='NorESM1-M', name=expe_name, member=2, ybeg=1850, yend=2005))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='NorESM1-M', name=expe_name, member=3, ybeg=1850, yend=2005))
+
+    return dict_allexpes
+
+
 def dict_expes_CMIP5_abrupt4xCO2(project_name):
     '''
     Define the specific dict of Expe-s for CMIP-5 abrupt4xCO2-related studies
@@ -157,7 +248,7 @@ def dict_expes_stab_article(project_name):
 
 def dict_expes_historical_CM6(project_name):
     '''
-    Define the specific dict of Expe-s for historical CNRM-CM6 simulations
+    Define the specific dict of Expe-s for CNRM-CM6 historical simulations
     '''
     dict_allexpes = {}
     eCTL = Expe(project=project_name, model='CNRM-CM6-1', name='piControl', member=1, ybeg=1850, yend=2349, marker=',', color='silver')
@@ -166,6 +257,33 @@ def dict_expes_historical_CM6(project_name):
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=1, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=2, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=3, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=4, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=5, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=6, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=7, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=8, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=9, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=10, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    return dict_allexpes
+
+
+def dict_expes_historical_CM5(project_name):
+    '''
+    Define the specific dict of Expe-s for CNRM-CM5 historical simulations
+    '''
+    dict_allexpes = {}
+    eCTL = Expe(project=project_name, model='CNRM-CM5', name='piControl', member=1, ybeg=1850, yend=2699, marker=',', color='silver')
+    dict_allexpes[eCTL.expid()] = eCTL
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=1, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=2, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=3, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=4, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=5, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=6, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=7, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=8, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=9, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM5', name='historical', member=10, ybeg=1850, yend=2005, expe_control=eCTL, marker=',', color='dimgray'))
     return dict_allexpes
 
 
@@ -245,7 +363,7 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
         if verbose:
             print exp.name, exp.member
         for var in dictvars.values():
-            f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, member=exp.member, period=exp.period())
+            f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(exp.member)+'i1p1f2', member=exp.member, period=exp.period())
             if f.listfiles() is not None:
                 if writeFiles:
                     if operation == avg_var:
