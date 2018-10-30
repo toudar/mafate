@@ -4,6 +4,19 @@ import numpy as np
 from varexpe import Expe, Variable
 
 
+def load_HadCRU_data(datasets, version=4):
+    name = 'HadCRUT'+str(version)
+    print(name)
+    xds = xr.open_dataset(name+'.gmean.annual.nc')
+    if version == 4:
+        varname='temperature_anomaly'
+    elif version == 3:
+        varname='temp'
+    else:
+        varname=None
+    datasets[(name, 'tas_Amon', 'brut')] = xds[varname]
+
+
 def define_CLIMAF_project(name, rootdirs, file_pattern):
     '''
     Define a new CLIMAF project by setting :
@@ -142,6 +155,20 @@ def dict_expes_stab_article(project_name):
     return dict_allexpes
 
 
+def dict_expes_historical_CM6(project_name):
+    '''
+    Define the specific dict of Expe-s for historical CNRM-CM6 simulations
+    '''
+    dict_allexpes = {}
+    eCTL = Expe(project=project_name, model='CNRM-CM6-1', name='piControl', member=1, ybeg=1850, yend=2349, marker=',', color='silver')
+    eCTL.expe_control = eCTL  
+    dict_allexpes[eCTL.expid()] = eCTL
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=1, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=2, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='historical', member=3, ybeg=1850, yend=2014, expe_control=eCTL, marker=',', color='dimgray'))
+    return dict_allexpes
+
+
 def dict_vars_T():
     '''
     Define the specific dict of Variable-s for N-T plot study
@@ -185,7 +212,6 @@ def dict_vars_heatc():
 
 
 def avg_var(modvar):
-    print('la')
     modvar_spcavg = ccdo(modvar,operator='fldavg')
     serie = ccdo(modvar_spcavg,operator='yearavg')
     return serie
@@ -223,7 +249,6 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
             if f.listfiles() is not None:
                 if writeFiles:
                     if operation == avg_var:
-                        print("ici")
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.gmean.annual.nc')
                     elif operation == avg_zon:
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.zmean.annual.nc')
@@ -233,15 +258,12 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
                 else:
                     xds = xr.open_dataset(cfile(operation(f)))
                     datasets[(exp.expid(), var.varid(), 'brut')] = xds[var.name]
-                    print(exp.name)
-                    print(datasets[(exp.expid(), var.varid(), 'brut')].shape)
                 if verbose:
                     print(f.listfiles())
             else:
                 print var.name, ' not in ', exp.name
     if writeFiles:
         return
-    print('ici2')
     # -- add 'temporal' mean value
     for exp in dictexpes.values():
         for var in dictvars.values():
