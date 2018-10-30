@@ -131,13 +131,14 @@ def dict_expes_stab_article(project_name):
     eCTL.expe_control = eCTL  
     dict_allexpes[eCTL.expid()] = eCTL
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-4xCO2', member=1, ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-2xCO2', member=1, ybeg=1850, yend=2314, expe_control=eCTL, marker=',', color='black'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='abrupt-2xCO2', member=1, ybeg=1850, yend=2341, expe_control=eCTL, marker=',', color='black'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-1p4xCO2-dab', member=1, ybeg=1969, yend=2268, expe_control=eCTL, marker='.', color='purple'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2383, expe_control=eCTL, marker='.', color='orangered'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2654, expe_control=eCTL, marker='.', color='orange'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2123, expe_control=eCTL, marker='.', color='dodgerblue'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-dab', member=1, ybeg=2137, yend=2409, expe_control=eCTL, marker='.', color='orangered'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2p8xCO2-dab', member=1, ybeg=2424, yend=2670, expe_control=eCTL, marker='.', color='orange'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-2xCO2', member=1, ybeg=1850, yend=2143, expe_control=eCTL, marker='.', color='dodgerblue'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='expo-4xCO2', member=1, ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2112, expe_control=eCTL, marker='.', color='green'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-2xCO2-tab8x', member=1, ybeg=2000, yend=2139, expe_control=eCTL, marker='.', color='green'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model='CNRM-CM6-1', name='stab-4xCO2-tab8x', member=1, ybeg=2074, yend=2105, expe_control=eCTL, marker='.', color='magenta'))
     return dict_allexpes
 
 
@@ -183,8 +184,9 @@ def dict_vars_heatc():
     return dict_vars
 
 
-def avg_var(modvar) :
-    modvar_spcavg = space_average(modvar)
+def avg_var(modvar):
+    print('la')
+    modvar_spcavg = ccdo(modvar,operator='fldavg')
     serie = ccdo(modvar_spcavg,operator='yearavg')
     return serie
 
@@ -221,6 +223,7 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
             if f.listfiles() is not None:
                 if writeFiles:
                     if operation == avg_var:
+                        print("ici")
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.gmean.annual.nc')
                     elif operation == avg_zon:
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.zmean.annual.nc')
@@ -230,12 +233,15 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
                 else:
                     xds = xr.open_dataset(cfile(operation(f)))
                     datasets[(exp.expid(), var.varid(), 'brut')] = xds[var.name]
+                    print(exp.name)
+                    print(datasets[(exp.expid(), var.varid(), 'brut')].shape)
                 if verbose:
                     print(f.listfiles())
             else:
                 print var.name, ' not in ', exp.name
     if writeFiles:
         return
+    print('ici2')
     # -- add 'temporal' mean value
     for exp in dictexpes.values():
         for var in dictvars.values():
