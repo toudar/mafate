@@ -2,11 +2,17 @@
 
 A Python package for extending CliMAF application
 
-# References
+# Requirements
 
-CliMAF : https://github.com/senesis/climaf & http://climaf.readthedocs.org
+`mafate` only requires [`climaf`](http://climaf.readthedocs.org), [`numpy`](http://numpy.org) and [`xarray`](http://xarray.pydata.org)
 
-# Quick Start
+# Contents
+
+* `varexpe.py` : definition of classes Expe and Var
+* `utils.py` : provide some useful utilities
+* `example.py` : a simple example to getting started
+
+# Getting started
 
 > Define specific CLIMAF projects
 ```python
