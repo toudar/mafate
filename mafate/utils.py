@@ -45,13 +45,7 @@ def define_CLIMAF_projects():
     rootdirs = []
     rootdirs.append('/home/stmartin/work/lxamacs/data')
     rootdirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
-    file_pattern = '${model}_${experiment}_r${member}_${variable}_${table}.gmean.annual.nc'
-    define_CLIMAF_project(name, rootdirs, file_pattern)
-    name = 'zonCMIP6'
-    rootdirs = []
-    rootdirs.append('/home/stmartin/work/lxamacs/data')
-    rootdirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
-    file_pattern = '${model}_${experiment}_r${member}_${variable}_${table}.zmean.annual.nc'
+    file_pattern = '${model}_${experiment}_r${member}_${variable}_${table}*.nc'
     define_CLIMAF_project(name, rootdirs, file_pattern)
     name = 'multiCMIP5'
     rootdirs = []
