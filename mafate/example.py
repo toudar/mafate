@@ -7,7 +7,7 @@ define_CLIMAF_projects()
 # -- Define dict of expes and of vars
 # -- Use predefined dictionnaries
 dictexps = {}
-dictexps.update(dict_expes_CMIP5_piControl('multiCMIP5'))
+dictexps.update(dict_expes_CMIP5_historical('multiCMIP5'))
 dictexps.update(dict_expes_historical_CNRMCM('multiCMIP5', 'CNRM-CM5', ybeg=1850, yend=2010, with_piControl=True))
 dictexps.update(dict_expes_historical_CNRMCM('CMIP6', 'CNRM-CM6-1', ybeg=1850, yend=2014, with_piControl=True))
 
