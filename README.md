@@ -22,8 +22,7 @@ from mafate import *
 define_CLIMAF_projects()
 ```
 
-> Define a specific dict of experiments and of vars
-> Use predefined dictionnaries
+> Define a specific dict of experiments and of vars : use predefined dictionnaries...
 ```python
 dictexps = {}
 dictexps.update(dict_expes_CMIP5_piControl('multiCMIP5'))
@@ -34,7 +33,7 @@ dictvars = {}
 dictvars.update(dict_vars_T())
 ```
 
-> Or use your own experiment-s and variable-s
+> ...or use your own experiment-s and variable-s
 ```python
 eCTL = Expe(project='CMIP6', model='CNRM-CM6-1', name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
 add_expe_dict(dictexps, eCTL)
