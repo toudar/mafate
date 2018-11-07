@@ -1,4 +1,4 @@
-# MAFATE : CliMAF Automatic Treatment Examples
+# MAFATE : CliMAF Automatic Treatment Extension
 
 A Python package for extending CliMAF application
 
@@ -36,4 +36,3 @@ my_dictvars.update(dict_var('va', 'Amon'))
 ```python
 datasets = load_datas(my_dictexps, my_dictvars, Id, verbose=True)
 ```
-
