@@ -4,14 +4,11 @@ class Expe(object):
         self.project = project # CLIMAF project name (pre-existing or user)
         self.model = model
         self.name = name
-        self.member = member
+        self.member = member # member is a list
         self.ybeg = ybeg
         self.yend = yend
         self.is_Obs = is_Obs
-        if expe_control is None:
-            self.expe_control = self
-        else:
-            self.expe_control = expe_control
+        self.expe_control = expe_control
         self.color = color
         self.marker = marker
         self.linestyle = linestyle
@@ -22,14 +19,11 @@ class Expe(object):
     def period(self):
         return str(self.ybeg)+'-'+str(self.yend)
 
-    def expid(self):
+    def expid(self, number=''):
         if self.is_Obs:
             return str(self.model)
         else:
-            if len(self.member) > 1:
-                return str(self.model)+'_'+str(self.name)+'_r1-'+str(len(self.member))
-            else:
-                return str(self.model)+'_'+str(self.name)+'_r'+str(self.member[0])
+            return str(self.model)+'_'+str(self.name)+number
 
 
 class Variable(object):

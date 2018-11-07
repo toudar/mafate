@@ -1,3 +1,2 @@
-from .utils import define_CLIMAF_projects, dict_expes_CMIP5_piControl, dict_expes_CMIP5_abrupt4xCO2, dict_expes_stab_article, dict_vars_T, dict_vars_NT, dict_vars_heatc, load_datas, avg_var, avg_zon, Id, add_expe_dict, load_HadCRU_data, dict_expes_historical_CM6, dict_expes_historical_CM5, dict_expes_CMIP5_historical, dict_var, dict_reanalyses
-
+from .utils import fld_year_avg, zon_year_avg, Id, define_CLIMAF_projects, add_expe_dict, dict_reanalyses, dict_expes_CMIP5_piControl, dict_expes_CMIP5_historical, dict_expes_CMIP5_abrupt4xCO2, dict_expes_stab_article, dict_expes_historical_CNRMCM, dict_var, dict_vars_T, dict_vars_NT, dict_vars_heatc, load_datas, load_HadCRU_data
 from .varexpe import Expe, Variable

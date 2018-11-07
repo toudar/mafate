@@ -23,16 +23,27 @@ define_CLIMAF_projects()
 ```
 
 > Define a specific dict of experiments and of vars
+> Use predefined dictionnaries
 ```python
-my_dictexps = {}
-add_expe_dict(my_dictexps, Expe(project='CMIP6', model='CNRM-CM6-1', name='historical', member=[1], ybeg=2000, yend=2000, marker=',', color='black'))
+dictexps = {}
+dictexps.update(dict_expes_CMIP5_piControl('multiCMIP5'))
+dictexps.update(dict_expes_historical_CNRMCM('multiCMIP5', 'CNRM-CM5', ybeg=1850, yend=2010, with_piControl=True))
+dictexps.update(dict_expes_historical_CNRMCM('CMIP6', 'CNRM-CM6-1', ybeg=1850, yend=2014, with_piControl=True))
 
-my_dictvars = {}
-my_dictvars.update(dict_var('ua', 'Amon'))
-my_dictvars.update(dict_var('va', 'Amon'))
+dictvars = {}
+dictvars.update(dict_vars_T())
 ```
 
-> Load datas
+> Or use your own experiment-s and variable-s
 ```python
-datasets = load_datas(my_dictexps, my_dictvars, Id, verbose=True)
+eCTL = Expe(project='CMIP6', model='CNRM-CM6-1', name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
+add_expe_dict(dictexps, eCTL)
+add_expe_dict(dictexps, Expe(project='STAB', model='CNRM-CM6-1', name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue'))
+
+dictvars.update(dict_var('pr', 'Amon'))
+```
+
+> Load data (with operation fld_year_avg)
+```python
+datasets = load_datas(dictexps, dictvars, operation=fld_year_avg, verbose=True)
 ```
