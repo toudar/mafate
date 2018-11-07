@@ -404,6 +404,8 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.gmean.annual.nc')
                     elif operation == avg_zon:
                         cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.zmean.annual.nc')
+                    elif operation == Id:
+                        cfile(operation(f), target=dir_target+'/'+exp.expid()+'_'+var.varid()+'.nc')
                     else:
                         print operation, 'not known'
                         return
