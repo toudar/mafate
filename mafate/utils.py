@@ -302,7 +302,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
             else:
                 print 'Loading data from CliMAF dataset : '; climaf_ds
         if writeFiles:
-            if operation == fld_year_var:
+            if operation == fld_year_avg:
                 cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.gmean.annual.nc')
             elif operation == zon_year_avg:
                 cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.zmean.annual.nc')
@@ -336,7 +336,7 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
     - a specific dict of Expe-s : dictexpes
     - a specific dict of Var-s : dictvars
 
-    Apply function operation = {fld_year_var, zon_year_avg, Id} to data
+    Apply function operation = {fld_year_avg, zon_year_avg, Id} to data
 
     Rq : the option dir_target/writeFiles is temporary (it is only used to quickly copy the CliMAF cache : use for lx and px PCs)
 
