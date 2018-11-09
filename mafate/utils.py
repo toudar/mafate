@@ -84,6 +84,7 @@ def define_CLIMAF_projects():
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
     root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')    
     file_patterns = []
     file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.gmean.annual.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
@@ -92,8 +93,17 @@ def define_CLIMAF_projects():
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
     root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')
     file_patterns = []
     file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.zmean.annual.nc')
+    define_CLIMAF_project(name, root_dirs, file_patterns)
+    name = 'tmpIdCMIP6' # temporary ?
+    root_dirs = []
+    root_dirs.append('/home/stmartin/work/lxamacs/data')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')    
+    file_patterns = []
+    file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
 
 

@@ -14,7 +14,16 @@ class Expe(object):
         self.linestyle = linestyle
         
     def __str__(self):
-        print self.name, self.ybeg
+        xstr = '---------------------------------------------------'
+        xstr += '\n'
+        xstr += 'Model  : %s'%(self.model)
+        xstr += '\n'
+        xstr += 'Name   : %s'%(self.name)
+        xstr += '\n'
+        xstr += 'Period : %i - %i'%(self.ybeg, self.yend)
+        xstr += '\n'
+        xstr += '---------------------------------------------------'
+        return xstr
 
     def period(self):
         return str(self.ybeg)+'-'+str(self.yend)
