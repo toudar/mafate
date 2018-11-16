@@ -220,14 +220,14 @@ def dict_expes_stab_article(project_name):
     eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
     add_expe_dict(dict_allexpes, eCTL)
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2390, expe_control=eCTL, marker=',', color='black'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2282, expe_control=eCTL, marker='.', color='purple'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2467, expe_control=eCTL, marker='.', color='orangered'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2723, expe_control=eCTL, marker='.', color='orange'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2182, expe_control=eCTL, marker='.', color='dodgerblue'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2418, expe_control=eCTL, marker=',', color='black'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2294, expe_control=eCTL, marker='.', color='purple'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2479, expe_control=eCTL, marker='.', color='orangered'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2747, expe_control=eCTL, marker='.', color='orange'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2193, expe_control=eCTL, marker='.', color='dodgerblue'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2229, expe_control=eCTL, marker='.', color='green'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2195, expe_control=eCTL, marker='.', color='magenta'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2254, expe_control=eCTL, marker='.', color='green'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2217, expe_control=eCTL, marker='.', color='magenta'))
     return dict_allexpes
 
 
