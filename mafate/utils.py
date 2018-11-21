@@ -230,6 +230,23 @@ def dict_expes_stab_article(project_name):
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2244, expe_control=eCTL, marker='.', color='magenta'))
     return dict_allexpes
 
+def dict_expes_stab_article_0(project_name):
+    '''
+    Define the specific dict of Expe-s for stabilization study
+    '''
+    model_name = 'CNRM-CM6-1'
+    dict_allexpes = {}
+    eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
+    add_expe_dict(dict_allexpes, eCTL)
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2419, expe_control=eCTL, marker=',', color='black'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', graphname='FF-1p4xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', graphname='FF-2xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', graphname='FF-2p8xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2218, expe_control=eCTL, marker='.', color='dodgerblue'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', graphname='FF-2xCO2-3step'))
+    return dict_allexpes
+
 
 def dict_expes_historical_CNRMCM(project_name, model_name, n_member=10, ybeg=1850, yend=2014, with_piControl=True):
     '''
