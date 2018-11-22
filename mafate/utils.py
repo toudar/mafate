@@ -234,6 +234,7 @@ def dict_expes_stab_article_0(project_name):
     '''
     Define the specific dict of Expe-s for stabilization study
     '''
+    # test ?
     model_name = 'CNRM-CM6-1'
     dict_allexpes = {}
     eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
