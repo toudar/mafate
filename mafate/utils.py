@@ -4,6 +4,19 @@ import numpy as np
 from varexpe import Expe, Variable
 
 
+def cdogen(x, listop):
+    '''
+    Apply successively listop cdo operations
+    '''
+    if listop == None:
+        return x
+    else:
+        for op in listop:
+            print '>>>>', op
+            x = ccdo(x, operator=op)
+        return x
+
+
 def fld_year_avg(x):
     '''
     Apply successively fldavg and yearavg cdo operations
@@ -264,12 +277,12 @@ def dict_expes_historical_CNRMCM(project_name, model_name, n_member=10, ybeg=185
     return dict_allexpes
 
 
-def dict_var(varname, vartable):
+def dict_var(name, table='*', grid='gr'):
     '''
-    Define a dict of one single variable with varname and vartable
+    Define a dict of one single variable with name, table and grid
     '''
     dict_vars = {}
-    v = Variable(name=varname, table=vartable)
+    v = Variable(name=name, table=table, grid=grid)
     dict_vars[v.name] = v
     return dict_vars
 
@@ -316,7 +329,7 @@ def dict_vars_heatc():
     return dict_vars
 
 
-def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, dir_target, writeFiles, verbose, computeMean, computeAnom):
+def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, listops, dir_target, writeFiles, verbose, computeMean, computeAnom):
     '''
     Auxiliary function to convert a CliMAF dataset/object to :
         - either a target file
@@ -330,17 +343,26 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
             else:
                 print 'Loading data from CliMAF dataset : '; climaf_ds
         if writeFiles:
-            if operation == fld_year_avg:
-                cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.gmean.annual.nc')
-            elif operation == zon_year_avg:
-                cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.zmean.annual.nc')
+            if operation == cdogen:
+                label_file = '.nc'
+                for cdop in listops:
+                    label_file = '.'+cdop+label_file
+                print(label_file)
+                cfile(operation(climaf_ds, listops), target=dir_target+'/'+exp_id+'_'+var.varid()+label_file)
+                # if listops == ['yearavg', 'fldmean']:
+                #    cfile(operation(climaf_ds, listops), target=dir_target+'/'+exp_id+'_'+var.varid()+'.gmean.annual.nc')
+                # elif listops == ['yearavg', 'zonmean']:
+                #     cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.zmean.annual.nc')
+                # else:
+                 #   print operation, ' not known...'
+                 #   return
             elif operation == Id:
                 cfile(operation(climaf_ds), target=dir_target+'/'+exp_id+'_'+var.varid()+'.nc')
             else:
                 print operation, ' not known...'
                 return
         else:
-            xds = xr.open_dataset(cfile(operation(climaf_ds)))
+            xds = xr.open_dataset(cfile(operation(climaf_ds, listops)))
             if verbose:
                 print 'Loading data for : ', (exp_id, var.varid(), 'brut')
             datasets[(exp_id, var.varid(), 'brut')] = xds[var.name]
@@ -358,7 +380,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
         print 'Data not found for : ', (var.varid(), exp_id)
 
 
-def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False, verbose=False, computeMean=True, computeAnom=True, add_rnet=True):
+def load_datas(dictexpes, dictvars, operation, listops=None, dir_target='.', writeFiles=False, verbose=False, computeMean=True, computeAnom=True, add_rnet=True):
     '''
     Get data from : 
     - a specific dict of Expe-s : dictexpes
@@ -381,17 +403,17 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
                 # -- if not, load datas for exp.expe_control
                 if exp.expe_control is not None and not my_datasets.has_key((exp.expe_control.expid(number='_r1'), var.varid(), 'brut')):
                     ex = exp.expe_control
-                    f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1f2', member=m, period=ex.period())
-                    convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, dir_target, writeFiles, verbose, computeMean, computeAnom)
+                    f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1f2', member=m, period=ex.period(), **exp.adds)
+                    convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, listops, dir_target, writeFiles, verbose, computeMean, computeAnom)
                 # -- load datas for each individual member of exp
-                f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1f2', member=m, period=exp.period())
-                convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, dir_target, writeFiles, verbose, computeMean, computeAnom)
+                f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1f2', member=m, period=exp.period(), **exp.adds)
+                convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, listops, dir_target, writeFiles, verbose, computeMean, computeAnom)
                 if fens is not None:
                     fens['r'+str(m)+'i1p1f2'] = f
             if fens is not None:
                 # -- load datas for ensemble mean of exp
                 eavg = ccdo_ens(fens, operator='ensavg')
-                convert_climaf_dataset(my_datasets, var, exp, '_rEM', eavg, operation, dir_target, writeFiles, verbose, computeMean, computeAnom)
+                convert_climaf_dataset(my_datasets, var, exp, '_rEM', eavg, operation, listops, dir_target, writeFiles, verbose, computeMean, computeAnom)
     if writeFiles:
         return
     if add_rnet:

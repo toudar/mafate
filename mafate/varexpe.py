@@ -16,6 +16,7 @@ class Expe(object):
             self.label = self.name
         else:
             self.label = label
+        self.adds = adds
         
     def __str__(self):
         xstr = '---------------------------------------------------'
