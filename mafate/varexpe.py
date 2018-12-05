@@ -1,10 +1,9 @@
 class Expe(object):
 
-    def __init__(self, project, model, name, member=[1], ybeg=1850, yend=1850, is_Obs=False, expe_control=None, color='k', marker='.', linestyle='-', label=None, adds=dict()):
+    def __init__(self, project, model, name, number=1, ybeg=1850, yend=1850, is_Obs=False, expe_control=None, color='k', marker='.', linestyle='-', label=None, adds=dict()):
         self.project = project # CLIMAF project name (pre-existing or user)
         self.model = model
         self.name = name
-        self.member = member # member is a list
         self.ybeg = ybeg
         self.yend = yend
         self.is_Obs = is_Obs
@@ -17,6 +16,7 @@ class Expe(object):
         else:
             self.label = label
         self.adds = adds
+        self.number = number
         
     def __str__(self):
         xstr = '---------------------------------------------------'
@@ -37,7 +37,7 @@ class Expe(object):
         if self.is_Obs:
             return str(self.model)
         else:
-            return str(self.model)+'_'+str(self.name)+number
+            return str(self.model)+'_'+str(self.name)+str(number)
 
 
 class Variable(object):
