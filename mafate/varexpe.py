@@ -1,6 +1,6 @@
 class Expe(object):
 
-    def __init__(self, project, model, name, member=[1], ybeg=1850, yend=1850, is_Obs=False, expe_control=None, color='k', marker='.', linestyle='-', graphname=None):
+    def __init__(self, project, model, name, member=[1], ybeg=1850, yend=1850, is_Obs=False, expe_control=None, color='k', marker='.', linestyle='-', label=None, adds=dict()):
         self.project = project # CLIMAF project name (pre-existing or user)
         self.model = model
         self.name = name
@@ -12,10 +12,10 @@ class Expe(object):
         self.color = color
         self.marker = marker
         self.linestyle = linestyle
-        if graphname == None:
-            self.graphname = self.name
+        if label == None:
+            self.label = self.name
         else:
-            self.graphname = graphname
+            self.label = label
         
     def __str__(self):
         xstr = '---------------------------------------------------'
@@ -47,7 +47,8 @@ class Variable(object):
         self.grid = grid
 
     def varid(self):
-        return str(self.name)+'_'+str(self.table)
+        return str(self.name)
+#        return str(self.name)+'_'+str(self.table)
 
     def __str__(self):
         print self.name, self.table

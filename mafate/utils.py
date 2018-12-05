@@ -221,12 +221,12 @@ def dict_expes_stab_article(project_name):
     add_expe_dict(dict_allexpes, eCTL)
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2419, expe_control=eCTL, marker=',', color='black'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', graphname='FF-1p4xCO2'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', graphname='FF-2xCO2'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', graphname='FF-2p8xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', label='FF-1p4xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', label='FF-2xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', label='FF-2p8xCO2'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2218, expe_control=eCTL, marker='.', color='dodgerblue'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', graphname='FF-2xCO2-3step'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', label='FF-2xCO2-3step'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2244, expe_control=eCTL, marker='.', color='magenta'))
     return dict_allexpes
 
@@ -241,11 +241,11 @@ def dict_expes_stab_article_0(project_name):
     add_expe_dict(dict_allexpes, eCTL)
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2419, expe_control=eCTL, marker=',', color='black'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', graphname='FF-1p4xCO2'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', graphname='FF-2xCO2'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', graphname='FF-2p8xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', label='FF-1p4xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', label='FF-2xCO2'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', label='FF-2p8xCO2'))
     add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2218, expe_control=eCTL, marker='.', color='dodgerblue'))
-    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', graphname='FF-2xCO2-3step'))
+    add_expe_dict(dict_allexpes, Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', label='FF-2xCO2-3step'))
     return dict_allexpes
 
 
@@ -397,8 +397,8 @@ def load_datas(dictexpes, dictvars, operation, dir_target=None, writeFiles=False
     if add_rnet:
         # -- add new var 'rnet' from rsdt, rsut and rlut values
         for (exp_id, var_id, var_type)  in my_datasets.keys():
-            if var_id == 'rsdt_Amon':
-                my_datasets[(exp_id, 'rnet', var_type)] = my_datasets[(exp_id, 'rsdt_Amon', var_type)] - my_datasets[(exp_id, 'rsut_Amon', var_type)] - my_datasets[(exp_id, 'rlut_Amon', var_type)]
+            if var_id == 'rsdt':
+                my_datasets[(exp_id, 'rnet', var_type)] = my_datasets[(exp_id, 'rsdt', var_type)] - my_datasets[(exp_id, 'rsut', var_type)] - my_datasets[(exp_id, 'rlut', var_type)]
     return my_datasets
 
 
@@ -413,4 +413,4 @@ def load_HadCRU_data(datasets, version=4):
         varname='temp'
     else:
         varname=None
-    datasets[(name, 'tas_Amon', 'brut')] = xds[varname]
+    datasets[(name, 'tas', 'brut')] = xds[varname]
