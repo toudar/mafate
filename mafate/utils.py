@@ -46,12 +46,45 @@ def dict_var(name, table='*', grid='gr'):
     return dict_vars
 
 
-def open_and_expand_dataset(my_file, dict_add_dims):
+
+def harmonizingCoords(ds):
+    '''
+    Auxiliary function to standardize coordinate names
+    '''
+
+    _levs = ['levels', 'level']
+    _lats = ['latitude']
+    _lons = ['longitude']
+
+    lev_ = 'plev'
+    lat_ = 'lat'
+    lon_ = 'lon'
+
+    ds = renameCoords(ds, _levs, lev_)
+    ds = renameCoords(ds, _lats, lat_)
+    ds = renameCoords(ds, _lons, lon_)
+
+    return ds
+
+
+
+def renameCoords(ds, liste, name):
+    for xname in liste:
+        if xname in ds:
+            ds = ds.rename({xname:name})
+    return ds
+
+
+def open_and_expand_dataset(my_file, dict_add_dims, harmonizeCoords):
     '''
     Auxiliary function to extend the use of xarray function open_dataset
     Add new dimensions defined by dict_add_dims
     '''
     xds = xr.open_dataset(my_file)
+    print(xds.coords)
+    if harmonizeCoords:
+        xds = harmonizingCoords(xds)
+    print(xds.coords)
     for d in dict_add_dims.keys():
         print d, dict_add_dims[d]
         xds = xds.expand_dims(d)
@@ -59,7 +92,7 @@ def open_and_expand_dataset(my_file, dict_add_dims):
     return xds
 
 
-def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom):
+def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords):
     '''
     Auxiliary function to convert a CliMAF dataset/object to :
         - either a target file
@@ -82,13 +115,28 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
                 print operation, ' not known...'
                 return
         else:
-            xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])})
+            xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])}, harmonizeCoords)
             if verbose:
                 print 'Loading data for : ', (exp_id, var.varid(), 'brut')
             if datasets.has_key(exp.name):
-                datasets[exp.name] = xr.merge([datasets[exp.name], xds[var.name]])
+                print(xds)
+                datasets[exp.name] = xr.merge([datasets[exp.name], xds])
+                print(datasets[exp.name])
             else:
-                datasets[exp.name] = xds[var.name]
+                datasets[exp.name] = xds
+            #% print('==================>')
+            #% print(datasets[exp.name][var.name].coords)
+            if computeMean:
+                datasets[exp.name][var.name+'_mean'] = datasets[exp.name][var.name].mean(dim='time')
+            if computeAnom:
+                if exp.expe_control is not None:
+                    print(np.shape(datasets[exp.expe_control.name][var.name+'_mean']))
+                    print(np.shape(datasets[exp.name][var.name]))
+                    datasets[exp.name][var.name+'_anom'] = datasets[exp.name][var.name] - datasets[exp.expe_control.name][var.name+'_mean']
+                else:
+                    datasets[exp.name][var.name+'_anom'] = datasets[exp.name][var.name] - datasets[exp.name][var.name+'_mean']
+            #% print('+++++>')            
+            #% print(datasets[exp.name].variables)
             #@ if computeMean:
             #@    # -- add 'temporal' mean value
             #@    datasets[(exp_id, var.varid(), 'mean')] = np.mean(datasets[(exp_id, var.varid(), 'brut')], axis=0)
@@ -103,7 +151,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
         print 'Data not found for : ', (var.varid(), exp_id)
 
 
-def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True):
+def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True, harmonizeCoords=False):
     '''
     Get data from : 
     - a specific dict of Expe-s : dictexpes
@@ -122,16 +170,24 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
             m = exp.number
             if exp.expe_control is not None:
                 ex = exp.expe_control
-                f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1f2', member=m, period=ex.period(), **exp.adds)
-                convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom)
-            f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1f2', member=m, period=exp.period(), **exp.adds)
-            convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom)
+                f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1*', member=m, period=ex.period(), **exp.adds)
+                convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
+            f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1*', member=m, period=exp.period(), **exp.adds)
+            convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
     if writeFiles:
         return
     if add_rnet:
-        # -- add new var 'rnet' from rsdt, rsut and rlut values        
-        if 'rsdt' in my_datasets.variables:
-            my_datasets['rnet'] = my_datasets['rsdt'] - my_datasets['rsut'] - my_datasets['rlut']
+        for e_ in my_datasets.keys():
+            print(e_)
+            ds_ = my_datasets[e_]
+            # -- add new var 'rnet' from rsdt, rsut and rlut values
+            # print(ds_.variables)
+            if 'rsdt' in ds_.variables:
+                ds_['rnet'] = ds_['rsdt'] - ds_['rsut'] - ds_['rlut']
+                if computeMean:
+                    ds_['rnet_mean'] = ds_['rsdt_mean'] - ds_['rsut_mean'] - ds_['rlut_mean']
+                if computeAnom:
+                    ds_['rnet_anom'] = ds_['rsdt_anom'] - ds_['rsut_anom'] - ds_['rlut_anom']
         #@for (exp_id, var_id, var_type)  in my_datasets.keys():
         #@    if var_id == 'rsdt':
         #@        my_datasets[(exp_id, 'rnet', var_type)] = my_datasets[(exp_id, 'rsdt', var_type)] - my_datasets[(exp_id, 'rsut', var_type)] - my_datasets[(exp_id, 'rlut', var_type)]

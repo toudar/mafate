@@ -17,7 +17,7 @@ def define_CLIMAF_projects():
     root_dirs = []    
     root_dirs.append('/cnrm/amacs/USERS/stmartin/data2/climobs')
     file_patterns = []
-    file_patterns.append('${experiment}/${variable}_${experiment}_YYYY-YYYY.monthly.nc')
+    file_patterns.append('${model}/${variable}_${model}_YYYY-YYYY.monthly.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
     #--
     name = 'myCMIP6'
