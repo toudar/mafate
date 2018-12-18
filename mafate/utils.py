@@ -1,5 +1,4 @@
 from climaf.api import *
-import iris
 import xarray as xr
 import numpy as np
 from varexpe import Expe, Variable
@@ -85,14 +84,16 @@ def open_and_expand_dataset(my_file, dict_add_dims, module, harmonizeCoords, var
         if harmonizeCoords:
             xds = harmonizingCoords(xds)
     if module == 'iris':
+        import iris
         xds = iris.load(my_file)
         xds[0].attributes = {}
         xds[0].rename(var)
-    for d in dict_add_dims.keys():
+    for d in list(dict_add_dims.keys()):
         if module == 'xarray':
             xds = xds.expand_dims(d)
             xds[d] = dict_add_dims[d]
         if module == 'iris':
+            import iris
             newdim = iris.coords.AuxCoord(dict_add_dims[d], long_name=d)
             xds[0].add_aux_coord(newdim)
     return xds
@@ -108,9 +109,9 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
     if climaf_ds is not None:
         if verbose:
             if hasattr(climaf_ds, 'listfiles'):
-                print 'Loading data from files : ', climaf_ds.listfiles()
+                print('Loading data from files : ', climaf_ds.listfiles())
             else:
-                print 'Loading data from CliMAF dataset : '; climaf_ds
+                print('Loading data from CliMAF dataset : ', climaf_ds)
         if writeFiles:
             if operation == cdogen:
                 suffix = '.nc'
@@ -118,16 +119,17 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
                     suffix = '.' + cdop + suffix
                 cfile(operation(climaf_ds, list_cdops), target=dir_target+'/'+exp_id+'_'+var.varid()+suffix)
             else:
-                print operation, ' not known...'
+                print(operation, ' not known...')
                 return
         else:
             xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])}, module, harmonizeCoords, var.varid())
             if verbose:
-                print 'Loading data for : ', (exp_id, var.varid(), 'brut')
-            if datasets.has_key(exp.name):
+                print('Loading data for : ', (exp_id, var.varid(), 'brut'))
+            if exp.name in datasets:
                 if module == 'xarray':
                     datasets[exp.name] = xr.merge([datasets[exp.name], xds])
                 if module == 'iris':
+                    import iris
                     datasets[exp.name] = (datasets[exp.name] + xds).merge()
             else:
                 datasets[exp.name] = xds
@@ -153,7 +155,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
             #@    else:
             #@        datasets[(exp_id, var.varid(), 'anom')] = datasets[(exp_id,  var.varid(), 'brut')] - datasets[(exp_id, var.varid(), 'mean')]
     else:
-        print 'Data not found for : ', (var.varid(), exp_id)
+        print('Data not found for : ', (var.varid(), exp_id))
 
 
 def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', module='xarray', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True, harmonizeCoords=False):
@@ -170,8 +172,8 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
         All the models/members/variables are grouped in a single Dataset for each experiment
     '''
     my_datasets = {}
-    for var in dictvars.values():
-        for exp in dictexpes.values():
+    for var in list(dictvars.values()):
+        for exp in list(dictexpes.values()):
             m = exp.number
             #del if exp.expe_control is not None:
             #del    ex = exp.expe_control
@@ -182,7 +184,7 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
     if writeFiles:
         return
     if add_rnet:
-        for e_ in my_datasets.keys():
+        for e_ in list(my_datasets.keys()):
             ds_ = my_datasets[e_]
             # -- add new var 'rnet' from rsdt, rsut and rlut values
             if 'rsdt' in ds_.variables:

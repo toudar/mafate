@@ -52,4 +52,4 @@ class Variable(object):
 #        return str(self.name)+'_'+str(self.table)
 
     def __str__(self):
-        print self.name, self.table
+        print(self.name, self.table)
