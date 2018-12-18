@@ -37,7 +37,7 @@ class Expe(object):
         if self.is_Obs:
             return str(self.model)
         else:
-            return str(self.model)+'_'+str(self.name)+'_r'+str(number)            
+            return str(self.model)+'_'+str(self.name)+'_r'+str(number)
 
 
 class Variable(object):

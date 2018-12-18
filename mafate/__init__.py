@@ -1,4 +1,4 @@
-version = '0.2.beta'
+version = '0.2.beta.iris'
 
 print('mafate version = '+version)
 

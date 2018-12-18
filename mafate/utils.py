@@ -1,4 +1,5 @@
 from climaf.api import *
+import iris
 import xarray as xr
 import numpy as np
 from varexpe import Expe, Variable
@@ -46,7 +47,6 @@ def dict_var(name, table='*', grid='gr'):
     return dict_vars
 
 
-
 def harmonizingCoords(ds):
     '''
     Auxiliary function to standardize coordinate names
@@ -75,21 +75,30 @@ def renameCoords(ds, liste, name):
     return ds
 
 
-def open_and_expand_dataset(my_file, dict_add_dims, harmonizeCoords):
+def open_and_expand_dataset(my_file, dict_add_dims, module, harmonizeCoords, var=None):
     '''
     Auxiliary function to extend the use of xarray function open_dataset
     Add new dimensions defined by dict_add_dims
     '''
-    xds = xr.open_dataset(my_file)
-    if harmonizeCoords:
-        xds = harmonizingCoords(xds)
+    if module == 'xarray':
+        xds = xr.open_dataset(my_file)
+        if harmonizeCoords:
+            xds = harmonizingCoords(xds)
+    if module == 'iris':
+        xds = iris.load(my_file)
+        xds[0].attributes = {}
+        xds[0].rename(var)
     for d in dict_add_dims.keys():
-        xds = xds.expand_dims(d)
-        xds[d] = dict_add_dims[d]
+        if module == 'xarray':
+            xds = xds.expand_dims(d)
+            xds[d] = dict_add_dims[d]
+        if module == 'iris':
+            newdim = iris.coords.AuxCoord(dict_add_dims[d], long_name=d)
+            xds[0].add_aux_coord(newdim)
     return xds
 
 
-def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords):
+def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, list_cdops, dir_target, module, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords):
     '''
     Auxiliary function to convert a CliMAF dataset/object to :
         - either a target file
@@ -112,11 +121,14 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
                 print operation, ' not known...'
                 return
         else:
-            xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])}, harmonizeCoords)
+            xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])}, module, harmonizeCoords, var.varid())
             if verbose:
                 print 'Loading data for : ', (exp_id, var.varid(), 'brut')
             if datasets.has_key(exp.name):
-                datasets[exp.name] = xr.merge([datasets[exp.name], xds])
+                if module == 'xarray':
+                    datasets[exp.name] = xr.merge([datasets[exp.name], xds])
+                if module == 'iris':
+                    datasets[exp.name] = (datasets[exp.name] + xds).merge()
             else:
                 datasets[exp.name] = xds
             if computeMean:
@@ -144,7 +156,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
         print 'Data not found for : ', (var.varid(), exp_id)
 
 
-def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True, harmonizeCoords=False):
+def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', module='xarray', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True, harmonizeCoords=False):
     '''
     Get data from : 
     - a specific dict of Expe-s : dictexpes
@@ -161,12 +173,12 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
     for var in dictvars.values():
         for exp in dictexpes.values():
             m = exp.number
-            if exp.expe_control is not None:
-                ex = exp.expe_control
-                f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1*', member=m, period=ex.period(), **exp.adds)
-                convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
+            #del if exp.expe_control is not None:
+            #del    ex = exp.expe_control
+            #del    f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1*', member=m, period=ex.period(), **exp.adds)
+            #del    convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
             f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1*', member=m, period=exp.period(), **exp.adds)
-            convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
+            convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, list_cdops, dir_target, module, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
     if writeFiles:
         return
     if add_rnet:
