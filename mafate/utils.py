@@ -81,12 +81,9 @@ def open_and_expand_dataset(my_file, dict_add_dims, harmonizeCoords):
     Add new dimensions defined by dict_add_dims
     '''
     xds = xr.open_dataset(my_file)
-    print(xds.coords)
     if harmonizeCoords:
         xds = harmonizingCoords(xds)
-    print(xds.coords)
     for d in dict_add_dims.keys():
-        print d, dict_add_dims[d]
         xds = xds.expand_dims(d)
         xds[d] = dict_add_dims[d]
     return xds
@@ -119,13 +116,9 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
             if verbose:
                 print 'Loading data for : ', (exp_id, var.varid(), 'brut')
             if datasets.has_key(exp.name):
-                print(xds)
                 datasets[exp.name] = xr.merge([datasets[exp.name], xds])
-                print(datasets[exp.name])
             else:
                 datasets[exp.name] = xds
-            #% print('==================>')
-            #% print(datasets[exp.name][var.name].coords)
             if computeMean:
                 datasets[exp.name][var.name+'_mean'] = datasets[exp.name][var.name].mean(dim='time')
             if computeAnom:
@@ -178,10 +171,8 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
         return
     if add_rnet:
         for e_ in my_datasets.keys():
-            print(e_)
             ds_ = my_datasets[e_]
             # -- add new var 'rnet' from rsdt, rsut and rlut values
-            # print(ds_.variables)
             if 'rsdt' in ds_.variables:
                 ds_['rnet'] = ds_['rsdt'] - ds_['rsut'] - ds_['rlut']
                 if computeMean:
