@@ -32,7 +32,7 @@ def dict_exp(my_expe):
     Define a dict of one single Expe my_expe
     '''
     dict_expe = {}
-    dict_expe[my_expe.expid(my_expe.number)] = my_expe
+    dict_expe[my_expe.expid()] = my_expe
     return dict_expe
 
 
@@ -46,25 +46,50 @@ def dict_var(name, table='*', grid='gr'):
     return dict_vars
 
 
+def extract_from_exp(datasets, expe):
+    '''
+    Get dataset from a single expe
+    '''
+    if expe is None:
+        return None
+    else:
+        return datasets[expe.name].sel(model=expe.model, member=expe.number)
+
+
+def compute_anom_from_control(datasets, dictexpes, dictvars):
+    '''
+    '''
+    for var in list(dictvars.values()):
+        for exp in list(dictexpes.values()):
+            print(exp.name, var.name)
+            compute_anom_from_control_varexpe(datasets, var, exp)
+
+
+def compute_anom_from_control_varexpe(datasets, var, expe):
+    '''
+    '''
+    ds_exp = extract_from_exp(datasets, expe)
+    ds_ctl = extract_from_exp(datasets, expe.expe_control)
+    datasets[expe.name][var.name+'_anom'] = xr.full_like(datasets[expe.name][var.name], fill_value=None)
+    if ds_ctl is not None:
+        ds_exp[var.name+'_anom'] = ds_exp[var.name] - ds_ctl[var.name].mean(dim='time')
+        datasets[expe.name] = xr.merge([datasets[expe.name], ds_exp[var.name+'_anom']])
+
+
 def harmonizingCoords(ds):
     '''
     Auxiliary function to standardize coordinate names
     '''
-
     _levs = ['levels', 'level']
     _lats = ['latitude']
     _lons = ['longitude']
-
     lev_ = 'plev'
     lat_ = 'lat'
     lon_ = 'lon'
-
     ds = renameCoords(ds, _levs, lev_)
     ds = renameCoords(ds, _lats, lat_)
     ds = renameCoords(ds, _lons, lon_)
-
     return ds
-
 
 
 def renameCoords(ds, liste, name):
@@ -99,13 +124,13 @@ def open_and_expand_dataset(my_file, dict_add_dims, module, harmonizeCoords, var
     return xds
 
 
-def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation, list_cdops, dir_target, module, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords):
+def convert_climaf_dataset(datasets, var, exp, climaf_ds, operation, list_cdops, dir_target, module, writeFiles, harmonizeCoords, verbose):
     '''
     Auxiliary function to convert a CliMAF dataset/object to :
         - either a target file
-        - either a xarray dataset
+        - either a xarray dataset or a iris object
     '''
-    exp_id = exp.expid(exp_number)
+    exp_id = exp.expid()
     if climaf_ds is not None:
         if verbose:
             if hasattr(climaf_ds, 'listfiles'):
@@ -124,7 +149,7 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
         else:
             xds = open_and_expand_dataset(cfile(operation(climaf_ds, list_cdops)), {'model':[exp.model], 'member':np.array([exp.number])}, module, harmonizeCoords, var.varid())
             if verbose:
-                print('Loading data for : ', (exp_id, var.varid(), 'brut'))
+                print('Loading data for expid::%s and for varid::%s'%(exp.expid(), var.varid()))
             if exp.name in datasets:
                 if module == 'xarray':
                     datasets[exp.name] = xr.merge([datasets[exp.name], xds])
@@ -133,32 +158,11 @@ def convert_climaf_dataset(datasets, var, exp, exp_number, climaf_ds, operation,
                     datasets[exp.name] = (datasets[exp.name] + xds).merge()
             else:
                 datasets[exp.name] = xds
-            if computeMean:
-                datasets[exp.name][var.name+'_mean'] = datasets[exp.name][var.name].mean(dim='time')
-            if computeAnom:
-                if exp.expe_control is not None:
-                    print(np.shape(datasets[exp.expe_control.name][var.name+'_mean']))
-                    print(np.shape(datasets[exp.name][var.name]))
-                    datasets[exp.name][var.name+'_anom'] = datasets[exp.name][var.name] - datasets[exp.expe_control.name][var.name+'_mean']
-                else:
-                    datasets[exp.name][var.name+'_anom'] = datasets[exp.name][var.name] - datasets[exp.name][var.name+'_mean']
-            #% print('+++++>')            
-            #% print(datasets[exp.name].variables)
-            #@ if computeMean:
-            #@    # -- add 'temporal' mean value
-            #@    datasets[(exp_id, var.varid(), 'mean')] = np.mean(datasets[(exp_id, var.varid(), 'brut')], axis=0)
-            #@ if computeAnom:
-            #@    # -- add anomaly-from-the-control-temporal-mean value
-            #@    if exp.expe_control is not None:
-            #@        datasets[(exp_id, var.varid(), 'anom')] = datasets[(exp_id,  var.varid(), 'brut')] - datasets[(exp.expe_control.expid(number='_r1'), var.varid(), 'mean')]
-            #@    # -- control is the expe itself if expe_control not specified
-            #@    else:
-            #@        datasets[(exp_id, var.varid(), 'anom')] = datasets[(exp_id,  var.varid(), 'brut')] - datasets[(exp_id, var.varid(), 'mean')]
     else:
-        print('Data not found for : ', (var.varid(), exp_id))
+        print('Data not found for expid::%s and for varid::%s'%(exp.expid(), var.varid()))
 
 
-def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', module='xarray', writeFiles=False, verbose=False, computeMean=False, computeAnom=False, add_rnet=True, harmonizeCoords=False):
+def load_datas(dictexpes, dictvars, operation=cdogen, list_cdops=None, dir_target='.', module='xarray', writeFiles=False, computeAnom=False, add_rnet=True, harmonizeCoords=False, verbose=False):
     '''
     Get data from : 
     - a specific dict of Expe-s : dictexpes
@@ -168,32 +172,25 @@ def load_datas(dictexpes, dictvars, operation, list_cdops=None, dir_target='.', 
 
     Rq : the option dir_target/writeFiles is temporary (it is only used to quickly copy the CliMAF cache : use for lx and px PCs)
 
-    > Return a dictionary of xarray's Dataset indexed by the experiment name:
+    > Return a dictionary of xarray's Dataset or iris's object indexed by the experiment name:
         All the models/members/variables are grouped in a single Dataset for each experiment
     '''
     my_datasets = {}
     for var in list(dictvars.values()):
         for exp in list(dictexpes.values()):
             m = exp.number
-            #del if exp.expe_control is not None:
-            #del    ex = exp.expe_control
-            #del    f = ds(project=ex.project, variable=var.name, table=var.table, gridtype=var.grid, model=ex.model, experiment=ex.name, realization='r1i1p1*', member=m, period=ex.period(), **exp.adds)
-            #del    convert_climaf_dataset(my_datasets, var, ex, '_r1', f, operation, list_cdops, dir_target, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
             f = ds(project=exp.project, variable=var.name, table=var.table, gridtype=var.grid, model=exp.model, experiment=exp.name, realization='r'+str(m)+'i1p1*', member=m, period=exp.period(), **exp.adds)
-            convert_climaf_dataset(my_datasets, var, exp, '_r'+str(m), f, operation, list_cdops, dir_target, module, writeFiles, verbose, computeMean, computeAnom, harmonizeCoords)
+            convert_climaf_dataset(my_datasets, var, exp, f, operation, list_cdops, dir_target, module, writeFiles, harmonizeCoords, verbose)
     if writeFiles:
         return
+    if computeAnom:
+        compute_anom_from_control(my_datasets, dictexpes, dictvars)
     if add_rnet:
         for e_ in list(my_datasets.keys()):
             ds_ = my_datasets[e_]
             # -- add new var 'rnet' from rsdt, rsut and rlut values
             if 'rsdt' in ds_.variables:
                 ds_['rnet'] = ds_['rsdt'] - ds_['rsut'] - ds_['rlut']
-                if computeMean:
-                    ds_['rnet_mean'] = ds_['rsdt_mean'] - ds_['rsut_mean'] - ds_['rlut_mean']
                 if computeAnom:
                     ds_['rnet_anom'] = ds_['rsdt_anom'] - ds_['rsut_anom'] - ds_['rlut_anom']
-        #@for (exp_id, var_id, var_type)  in my_datasets.keys():
-        #@    if var_id == 'rsdt':
-        #@        my_datasets[(exp_id, 'rnet', var_type)] = my_datasets[(exp_id, 'rsdt', var_type)] - my_datasets[(exp_id, 'rsut', var_type)] - my_datasets[(exp_id, 'rlut', var_type)]
     return my_datasets

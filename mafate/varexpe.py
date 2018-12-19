@@ -7,7 +7,10 @@ class Expe(object):
         self.ybeg = ybeg
         self.yend = yend
         self.is_Obs = is_Obs
-        self.expe_control = expe_control
+        if expe_control is None:
+            self.expe_control = self
+        else:
+            self.expe_control = expe_control
         self.color = color
         self.marker = marker
         self.linestyle = linestyle
@@ -26,18 +29,16 @@ class Expe(object):
         xstr += 'Name   : %s'%(self.name)
         xstr += '\n'
         xstr += 'Period : %i - %i'%(self.ybeg, self.yend)
-        xstr += '\n'
-        xstr += '---------------------------------------------------'
         return xstr
 
     def period(self):
         return str(self.ybeg)+'-'+str(self.yend)
 
-    def expid(self, number=''):
+    def expid(self):
         if self.is_Obs:
             return str(self.model)
         else:
-            return str(self.model)+'_'+str(self.name)+'_r'+str(number)
+            return str(self.model)+'_'+str(self.name)+'_r'+str(self.number)
 
 
 class Variable(object):
@@ -52,4 +53,11 @@ class Variable(object):
 #        return str(self.name)+'_'+str(self.table)
 
     def __str__(self):
-        print(self.name, self.table)
+        xstr = '---------------------------------------------------'
+        xstr += '\n'
+        xstr += 'name   : %s'%(self.name)
+        xstr += '\n'
+        xstr += 'table  : %s'%(self.table)
+        xstr += '\n'
+        xstr += 'grid   : %s'%(self.grid)
+        return xstr        

@@ -204,20 +204,18 @@ def dict_expes_stab_article_0(project_name):
     return dict_allexpes
 
 
-def dict_expes_historical_CNRMCM(project_name, model_name, n_member=10, ybeg=1850, yend=2014, with_piControl=True):
+def dict_expes_historical_CNRMCM(project_name, model_name, n_member=10, ybeg=1850, yend=2014, yend_piControl=0):
     '''
     Define a specific dict of Expe-s for CNRM-CM6-1 (or CNRM-CM5) historical simulations
     '''
     dict_allexpes = {}
-    if with_piControl:
+    eCTL = None
+    if yend_piControl > 0:
         # -- add piControl experiment to the dict of Expe-s
-        eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
+        eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=yend_piControl, marker=',', color='silver')
         dict_allexpes.update(dict_exp(eCTL))
-    else:
-        eCTL = None
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='historical', number=1, ybeg=ybeg, yend=yend, expe_control=eCTL, marker=',', color='dimgray')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='historical', number=2, ybeg=ybeg, yend=yend, expe_control=eCTL, marker=',', color='dimgray')))
-    print(dict_allexpes)
+    for n in range(n_member):
+        dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='historical', number=n+1, ybeg=ybeg, yend=yend, expe_control=eCTL, marker=',', color='dimgray')))
     return dict_allexpes
 
 
