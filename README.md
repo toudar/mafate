@@ -52,9 +52,9 @@ print(type(dictexps['CNRM-CM5_historical_r2']))
 print(dictexps['CNRM-CM5_historical_r2'])
 ```
 
-> Load data
+> Load data : you can specify a list of cdo operations : list_cdops
 ```python
-dict_datasets = load_datas(dictexps, dictvars, operation=cdogen, list_cdops=['sellonlatbox,0,360,-30,30', 'fldmean'], verbose=True)
+dict_datasets = load_datas(dictexps, dictvars, list_cdops=['sellonlatbox,0,360,-30,30', 'fldmean'], verbose=True)
 ```
 
 > dict_datasets is a python dictionnary of xarray Datasets or iris objects
