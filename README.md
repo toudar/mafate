@@ -63,8 +63,7 @@ dict_datasets = load_datas(dictexps, dictvars, list_cdops=['sellonlatbox,0,360,-
 ```python
 print(dict_datasets['historical'])
 ```
-
-# Examples of use of xarray dataset
+**Examples of use of xarray dataset**
 
 > to select a Dataset specific to an specific experiment
 ```python
