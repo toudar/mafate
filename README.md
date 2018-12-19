@@ -58,12 +58,14 @@ dict_datasets = load_datas(dictexps, dictvars, list_cdops=['sellonlatbox,0,360,-
 ```
 
 > dict_datasets is a python dictionnary of xarray Datasets or iris objects
+
 > dict_datasets['expe.name'], e.g. dict_datasets['historical'] contains all variables/members/models relatives to experiment 'historical'
 ```python
 print(dict_datasets['historical'])
 ```
 
 > examples of use of xarray dataset
+
 > to select a Dataset specific to an specific experiment
 ```python
 ds = extract_from_exp(dict_datasets, dictexps['CNRM-CM5_historical_r2'])
