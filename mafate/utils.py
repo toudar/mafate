@@ -1,7 +1,7 @@
 from climaf.api import *
 import xarray as xr
 import numpy as np
-from varexpe import Expe, Variable
+from .varexpe import Expe, Variable
 
 
 def cdogen(x, list_cdops):

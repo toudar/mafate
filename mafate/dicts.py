@@ -1,6 +1,6 @@
 import numpy as np
-from varexpe import Expe, Variable
-from utils import *
+from .varexpe import Expe, Variable
+from .utils import *
 
 def define_CLIMAF_projects():
     '''
@@ -166,7 +166,7 @@ def dict_expes_CMIP5_abrupt4xCO2(project_name):
     return dict_allexpes
 
 
-def dict_expes_stab_article(project_name):
+def dict_expes_stab_article(project_name, rootdir):
     '''
     Define the specific dict of Expe-s for stabilization study
     '''
@@ -174,16 +174,25 @@ def dict_expes_stab_article(project_name):
     dict_allexpes = {}
     eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
     dict_allexpes.update(dict_exp(eCTL))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2419, expe_control=eCTL, marker=',', color='black')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', label='FF-1p4xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', label='FF-2xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', label='FF-2p8xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2218, expe_control=eCTL, marker='.', color='dodgerblue')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', label='FF-2xCO2-3step')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2244, expe_control=eCTL, marker='.', color='magenta')))
+    expes = {}
+    #@ expes['abrupt-4xCO2'] = [1850, 2849, '.', 'dimgray', 'abrupt-4xCO2']
+    expes['abrupt-2xCO2'] = [1850, 2599, ',', 'black', 'abrupt-2xCO2']
+    expes['stab-1p4xCO2-dab'] = [1969, 2468, '.', 'purple', 'FF-1p4xCO2']
+    expes['stab-2xCO2-dab'] = [2137, 2636, '.', 'orangered', 'FF-2xCO2']
+    expes['stab-2p8xCO2-dab'] = [2424, 2923, '.', 'orange', 'FF-2p8xCO2']
+    expes['expo-2xCO2'] = [1850, 2349, '.', 'dodgerblue', 'expo-2xCO2']
+    expes['stab-2xCO2-tab8x'] = [2000, 2399, '.', 'green', 'FF-2xCO2-3step']
+    for e_ in expes.keys():
+        ybeg = expes[e_][0]
+        yend = expes[e_][1]
+        marker = expes[e_][2]
+        color = expes[e_][3]
+        label = expes[e_][4]
+        dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name=e_, ybeg=ybeg, yend=yend, adds=dict(root=rootdir), expe_control=eCTL, marker=marker, color=color, label=label)))
+    #@ dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2244, expe_control=eCTL, marker='.', color='magenta')))
+    #@ dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue')))    
     return dict_allexpes
+
 
 def dict_expes_stab_article_0(project_name):
     '''
