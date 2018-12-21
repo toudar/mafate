@@ -42,30 +42,27 @@ def define_CLIMAF_projects():
     file_patterns.append('${model}_${experiment}/X/${model}_${experiment}_arpsfx_monthly_${variable}_YYYY-YYYY.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
     #--
-    name = 'tmpCMIP6' # temporary ?
+    name = 'fldmeanCMIP6' # temporary ?
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')    
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT/STAB')
     file_patterns = []
-    file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.gmean.annual.nc')
+    file_patterns.append('${model}_${experiment}_r${member}_${variable}.yearmean.fldmean.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
     #--
-    name = 'zonCMIP6' # temporary ?
+    name = 'zonmeanCMIP6' # temporary ?
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT/STAB')
     file_patterns = []
-    file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.zmean.annual.nc')
+    file_patterns.append('${model}_${experiment}_r${member}_${variable}.yearmean.zonmean.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
-    name = 'tmpIdCMIP6' # temporary ?
+    name = 'idCMIP6' # temporary ?
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/data3/sorties/STAB/CLIMAF')
-    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT')    
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT/STAB')
     file_patterns = []
-    file_patterns.append('${model}_${experiment}_r${member}_${variable}_${table}.nc')
+    file_patterns.append('${model}_${experiment}_r${member}_${variable}.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
 
 
@@ -166,7 +163,7 @@ def dict_expes_CMIP5_abrupt4xCO2(project_name):
     return dict_allexpes
 
 
-def dict_expes_stab_article(project_name, rootdir):
+def dict_expes_stab_article(project_name, rootdir='/cnrm/amacs/USERS/stmartin/DATA', extra_expes=False):
     '''
     Define the specific dict of Expe-s for stabilization study
     '''
@@ -175,13 +172,17 @@ def dict_expes_stab_article(project_name, rootdir):
     eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
     dict_allexpes.update(dict_exp(eCTL))
     expes = {}
-    #@ expes['abrupt-4xCO2'] = [1850, 2849, '.', 'dimgray', 'abrupt-4xCO2']
+    expes['abrupt-4xCO2'] = [1850, 2849, '.', 'dimgray', 'abrupt-4xCO2']
     expes['abrupt-2xCO2'] = [1850, 2599, ',', 'black', 'abrupt-2xCO2']
     expes['stab-1p4xCO2-dab'] = [1969, 2468, '.', 'purple', 'FF-1p4xCO2']
     expes['stab-2xCO2-dab'] = [2137, 2636, '.', 'orangered', 'FF-2xCO2']
     expes['stab-2p8xCO2-dab'] = [2424, 2923, '.', 'orange', 'FF-2p8xCO2']
     expes['expo-2xCO2'] = [1850, 2349, '.', 'dodgerblue', 'expo-2xCO2']
     expes['stab-2xCO2-tab8x'] = [2000, 2399, '.', 'green', 'FF-2xCO2-3step']
+    if extra_expes:    
+        expes['stab-4xCO2-tab8x'] = [2074, 2303, '.', 'crimson', 'FF-4xCO2-3step']
+        #@ expes['expo-4xCO2'] = [1850, 2049, '.', 'dodgerblue', 'expo-2xCO2']
+        expes['expo-4xCO2'] = [1850, 2049, '.', 'dodgerblue', 'expo-2xCO2']
     for e_ in expes.keys():
         ybeg = expes[e_][0]
         yend = expes[e_][1]
@@ -189,27 +190,6 @@ def dict_expes_stab_article(project_name, rootdir):
         color = expes[e_][3]
         label = expes[e_][4]
         dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name=e_, ybeg=ybeg, yend=yend, adds=dict(root=rootdir), expe_control=eCTL, marker=marker, color=color, label=label)))
-    #@ dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-4xCO2-tab8x', ybeg=2074, yend=2244, expe_control=eCTL, marker='.', color='magenta')))
-    #@ dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='expo-4xCO2', ybeg=1850, yend=2049, expe_control=eCTL, marker='.', color='dodgerblue')))    
-    return dict_allexpes
-
-
-def dict_expes_stab_article_0(project_name):
-    '''
-    Define the specific dict of Expe-s for stabilization study
-    '''
-    # test ?
-    model_name = 'CNRM-CM6-1'
-    dict_allexpes = {}
-    eCTL = Expe(project=project_name, model=model_name, name='piControl', ybeg=1850, yend=2349, marker=',', color='silver')
-    dict_allexpes.update(dict_exp(eCTL))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='abrupt-4xCO2', ybeg=1850, yend=2849, expe_control=eCTL, marker=',', color='dimgray')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='abrupt-2xCO2', ybeg=1850, yend=2419, expe_control=eCTL, marker=',', color='black')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-1p4xCO2-dab', ybeg=1969, yend=2319, expe_control=eCTL, marker='.', color='purple', label='FF-1p4xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2xCO2-dab', ybeg=2137, yend=2505, expe_control=eCTL, marker='.', color='orangered', label='FF-2xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2p8xCO2-dab', ybeg=2424, yend=2763, expe_control=eCTL, marker='.', color='orange', label='FF-2p8xCO2')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='expo-2xCO2', ybeg=1850, yend=2218, expe_control=eCTL, marker='.', color='dodgerblue')))
-    dict_allexpes.update(dict_exp(Expe(project=project_name, model=model_name, name='stab-2xCO2-tab8x', ybeg=2000, yend=2268, expe_control=eCTL, marker='.', color='green', label='FF-2xCO2-3step')))
     return dict_allexpes
 
 

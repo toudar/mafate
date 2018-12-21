@@ -8,7 +8,7 @@ def cdogen(x, list_cdops):
     '''
     Apply successively a list of cdo operations, list_cdops
     '''
-    if list_cdops == None:
+    if list_cdops is None:
         return x
     else:
         for op in list_cdops:
@@ -61,7 +61,6 @@ def compute_anom_from_control(datasets, dictexpes, dictvars):
     '''
     for var in list(dictvars.values()):
         for exp in list(dictexpes.values()):
-            print(exp.name, var.name)
             compute_anom_from_control_varexpe(datasets, var, exp)
 
 
@@ -140,9 +139,12 @@ def convert_climaf_dataset(datasets, var, exp, climaf_ds, operation, list_cdops,
         if writeFiles:
             if operation == cdogen:
                 suffix = '.nc'
-                for cdop in list_cdops:
-                    suffix = '.' + cdop + suffix
-                cfile(operation(climaf_ds, list_cdops), target=dir_target+'/'+exp_id+'_'+var.varid()+suffix)
+                if list_cdops is None:
+                    cfile(climaf_ds, target=dir_target+'/'+exp_id+'_'+var.varid()+suffix)
+                else:
+                    for cdop in list_cdops:
+                        suffix = '.' + cdop + suffix
+                    cfile(operation(climaf_ds, list_cdops), target=dir_target+'/'+exp_id+'_'+var.varid()+suffix)
             else:
                 print(operation, ' not known...')
                 return
