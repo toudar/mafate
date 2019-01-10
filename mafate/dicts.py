@@ -57,6 +57,15 @@ def define_CLIMAF_projects():
     file_patterns = []
     file_patterns.append('${model}_${experiment}_r${member}_${variable}.yearmean.zonmean.nc')
     define_CLIMAF_project(name, root_dirs, file_patterns)
+    #--
+    name = 'onlyyearmeanCMIP6' # temporary ?
+    root_dirs = []
+    root_dirs.append('/home/stmartin/work/lxamacs/data')
+    root_dirs.append('/cnrm/amacs/USERS/stmartin/CLIMAF/EXPORT/STAB')
+    file_patterns = []
+    file_patterns.append('${model}_${experiment}_r${member}_${variable}.yearmean.nc')
+    define_CLIMAF_project(name, root_dirs, file_patterns)
+    #--    
     name = 'idCMIP6' # temporary ?
     root_dirs = []
     root_dirs.append('/home/stmartin/work/lxamacs/data')
@@ -181,8 +190,7 @@ def dict_expes_stab_article(project_name, rootdir='/cnrm/amacs/USERS/stmartin/DA
     expes['stab-2xCO2-tab8x'] = [2000, 2399, '.', 'green', 'FF-2xCO2-3step']
     if extra_expes:    
         expes['stab-4xCO2-tab8x'] = [2074, 2303, '.', 'crimson', 'FF-4xCO2-3step']
-        #@ expes['expo-4xCO2'] = [1850, 2049, '.', 'dodgerblue', 'expo-2xCO2']
-        expes['expo-4xCO2'] = [1850, 2049, '.', 'dodgerblue', 'expo-2xCO2']
+        expes['expo-4xCO2'] = [1850, 2249, '.', 'dodgerblue', 'expo-4xCO2']
     for e_ in expes.keys():
         ybeg = expes[e_][0]
         yend = expes[e_][1]
