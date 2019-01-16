@@ -69,10 +69,9 @@ def compute_anom_from_control_varexpe(datasets, var, expe):
     '''
     ds_exp = extract_from_exp(datasets, expe)
     ds_ctl = extract_from_exp(datasets, expe.expe_control)
-    datasets[expe.name][var.name+'_anom'] = xr.full_like(datasets[expe.name][var.name], fill_value=None)
-    if ds_ctl is not None:
-        ds_exp[var.name+'_anom'] = ds_exp[var.name] - ds_ctl[var.name].mean(dim='time')
-        datasets[expe.name] = xr.merge([datasets[expe.name], ds_exp[var.name+'_anom']])
+    if var.name+'_anom' not in datasets[expe.name].variables:
+        datasets[expe.name][var.name+'_anom'] = xr.full_like(datasets[expe.name][var.name], fill_value=None)
+    datasets[expe.name][var.name+'_anom'].loc[dict(model=expe.model, member=expe.number)] = datasets[expe.name][var.name].loc[dict(model=expe.model, member=expe.number)] - ds_ctl[var.name].mean(dim='time')
 
 
 def harmonizingCoords(ds):
